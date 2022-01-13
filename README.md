@@ -50,6 +50,9 @@ for (int y = 0; y < 10; y++)
 
 ## 移動前檢查地圖格子
 玩家移動由 SceneController 指派，在每次移動某一方向時，都先檢查將要去的格子，數值是否為 0（可走的路）。
+
+![](README/check-next-cell.jpg)
+
 ```C#
 void Update() {
 
@@ -102,6 +105,36 @@ Vector3 CellToPosition(int cx, int cy)
 
 ![](README/gridobject-extends.jpg)
 
+```C#
+// GridObject
+// 所有在網格上的物件都繼承此類別
+// 也定義一些可以共用的 static 成員＆方法
+public class GridObject : MonoBehaviour
+{
+    public int CellX;
+    public int CellY;
+
+    static public Vector3 CellToPosition(int cx, int cy)
+    {
+        // ......
+    }
+}
+```
+Player 繼承自 GridObject，所以可以直接使用 CellX, CellY, CellToPosition 來應用在 Update 裡面，做出移動到下一格的漸變： 
+```C#
+public class Player : GridObject
+{
+    void Update()
+    {
+        // 轉換格子座標
+        Vector3 targetPos = CellToPosition(CellX, CellY);
+
+        // 漸漸移動
+        transform.position = Vector3.Lerp(transform.position, targetPos, 0.2f);
+    }
+}
+```
+<br/>
 <br/>
 
 
