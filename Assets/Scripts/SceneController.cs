@@ -85,11 +85,16 @@ public class SceneController : MonoBehaviour
         // 按下左方向鍵
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            player.FaceDir = FaceDirection.Left; // 角色轉向
-            if (player.CellX - 1 >= 0) // 判斷往左是否會超出左邊界
+            // 角色轉向
+            player.FaceDir = FaceDirection.Left;
+
+            // 確認玩家往左一格還在陣列之內
+            if (player.CellX - 1 >= 0)
             {
-                // 取得將要前往的左一格數值，判斷是路才走過去
+                // 取得將要前往的左一格數值
                 int cellVal = Map[player.CellY, player.CellX - 1];
+
+                // 判斷是路才走過去
                 if (cellVal == 0)
                 {
                     player.CellX -= 1;

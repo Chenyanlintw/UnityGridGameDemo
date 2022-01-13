@@ -26,6 +26,7 @@ int[,] Map = new int[10, 10] {
 ```
 
 使用兩個 for 迴圈即可逐格查詢整張地圖內容：
+(注意，因爲執行順序的關係，第一層迴圈掌管的是 Y 座標，第二層才是 X 座標)
 
 ```C#
 for (int y = 0; y < 10; y++)
@@ -41,10 +42,39 @@ for (int y = 0; y < 10; y++)
             // 產生牆壁元件，放到該座標位置上
         }
 
-        ....
+        // ......
     }
 }
 ```
+<br/>
+
+## 移動前檢查地圖格子
+玩家移動由 SceneController 指派，在每次移動某一方向時，都先檢查將要去的格子，數值是否為 0（可走的路）。
+```C#
+void Update() {
+
+    // 按下左方向鍵
+    if (Input.GetKeyDown(KeyCode.LeftArrow))
+    {
+        // 確認玩家往左一格還在陣列之內
+        if (player.CellX - 1 >= 0) 
+        {
+            // 取得將要前往的左一格數值
+            int cellVal = Map[player.CellY, player.CellX - 1];
+
+            // 判斷是路才走過去
+            if (cellVal == 0)
+            {
+                player.CellX -= 1;
+            }
+        }
+    }
+
+    // 其他方向鍵，都是類似做法
+    // ......
+}
+```
+
 <br/>
 
 ## 座標系統轉換
